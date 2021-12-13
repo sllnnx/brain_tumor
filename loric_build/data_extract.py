@@ -6,6 +6,8 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
+
+
 # Path to folders with pictures
 
 path_yes = "dataset/yes"
