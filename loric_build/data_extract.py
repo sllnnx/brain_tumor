@@ -54,4 +54,5 @@ for nb, name in enumerate(df_nbs.Path):
         df.iloc[index] = pic_vector
         index += 1
 
-df['diagnostic'] = diagnostic
+diag_num = [0 if i == 'no' else 1 if i == "yes" else i for i in diagnostic]
+df['diagnostic'] = diag_num
