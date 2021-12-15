@@ -2,9 +2,8 @@ import pandas as pd
 from PIL import Image
 import os
 from numpy import asarray
-import numpy as np
-import seaborn as sns
-from matplotlib import pyplot as plt
+from sklearn.model_selection import train_test_split
+from Deep_Neural_Network import *
 
 
 
@@ -58,3 +57,15 @@ for nb, name in enumerate(df_nbs.Path):
 
 diag_num = [0 if i == 'no' else 1 if i == "yes" else i for i in diagnostic]
 df['diagnostic'] = diag_num
+
+#SPlit data
+
+X = df.copy()
+y = X.pop('diagnostic')
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.4)
+
+
+y_train = y_train.values.reshape((y_train.shape[0], 1))
+y_test = y_test.values.reshape((y_test.shape[0], 1))
+
