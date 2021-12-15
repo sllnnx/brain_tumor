@@ -3,9 +3,7 @@ from PIL import Image
 import os
 from numpy import asarray
 from sklearn.model_selection import train_test_split
-from Deep_Neural_Network import *
-
-
+from loric_build.test import *
 
 # Path to folders with pictures
 
@@ -61,11 +59,19 @@ df['diagnostic'] = diag_num
 #SPlit data
 
 X = df.copy()
+X = X.astype('int')
 y = X.pop('diagnostic')
+X = X/255
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.4)
-
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
 
 y_train = y_train.values.reshape((y_train.shape[0], 1))
 y_test = y_test.values.reshape((y_test.shape[0], 1))
 
+X_train = X_train.T
+y_train = y_train.T
+X_test = X_test.T
+y_test = y_test.T
+
+param = L_layer_model(X_train, y_train, layers_dims = [25200, 5, 3, 1], num_iterations = 2000, print_cost = True)
+pro = predict(X_test, y_test, param)

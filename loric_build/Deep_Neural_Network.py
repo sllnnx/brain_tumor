@@ -1,8 +1,43 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from dnn_utils import sigmoid, sigmoid_backward, relu, relu_backward
 
-layer_dims = [5, 4, 3]
+#layer_dims = [5, 4, 3]
+def sigmoid(Z):
+
+    A = 1/(1+np.exp(-Z))
+    cache = Z
+
+    return A, cache
+
+def relu(Z):
+    A = np.maximum(0,Z)
+
+    assert(A.shape == Z.shape)
+
+    cache = Z 
+    return A, cache
+
+def relu_backward(dA, cache):
+    Z = cache
+    dZ = np.array(dA, copy=True) # just converting dz to a correct object.
+
+    # When z <= 0, you should set dz to 0 as well. 
+    dZ[Z <= 0] = 0
+
+    assert (dZ.shape == Z.shape)
+
+    return dZ
+
+def sigmoid_backward(dA, cache):
+
+    Z = cache
+
+    s = 1/(1+np.exp(-Z))
+    dZ = dA * s * (1-s)
+
+    assert (dZ.shape == Z.shape)
+
+    return dZ
 
 def initialize_parameters_deep(layer_dims):
 
@@ -125,11 +160,11 @@ def update_parameters(params, grads, learning_rate):
 
     return parameters
 
-def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 3000, print_cost=False):
+def L_layer_model(X, Y, layer_dims, learning_rate = 0.0075, num_iterations = 3000, print_cost=False):
 
     np.random.seed(1)
     costs = []                       
-    parameters = initialize_parameters_deep(layers_dims)
+    parameters = initialize_parameters_deep(layer_dims)
 	
     for i in range(0, num_iterations):
 	
@@ -152,4 +187,4 @@ def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 30
 
     
 
-    parameters, costs = L_layer_model(train_x, train_y, layers_dims, num_iterations = 2500, print_cost = True)
+    parameters, costs = L_layer_model(train_x, train_y, layer_dims, num_iterations = 2500, print_cost = True)
