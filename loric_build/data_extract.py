@@ -3,7 +3,7 @@ from PIL import Image
 import os
 from numpy import asarray
 from sklearn.model_selection import train_test_split
-from loric_build.test import *
+from loric_build.nn_and_metrics import *
 
 # Path to folders with pictures
 
