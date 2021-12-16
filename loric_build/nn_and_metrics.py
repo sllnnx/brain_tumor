@@ -399,7 +399,9 @@ def predict(X, y, parameters):
     #print ("true labels: " + str(y))
     print("Accuracy: "  + str(np.sum((p == y)/m)))
 
-    return p
+    acc = int(np.sum((p == y)/m))
+
+    return acc
 
 def print_mislabeled_images(classes, X, y, p):
     """
