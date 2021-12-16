@@ -42,7 +42,7 @@ m_width, m_height = 0.3*df_dim.describe().min()
 # Form DF
 
 pic_dim = Image.open('dataset/yes/Y1.jpg').convert('L')
-pic_dim = pic.resize((int(m_width),int(m_height)), Image.NEAREST)
+pic_dim = pic_dim.resize((int(m_width),int(m_height)), Image.NEAREST)
 pic_vec = asarray(pic_dim).ravel()
 dim = len(pic_vec)
 
