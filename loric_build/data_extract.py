@@ -34,21 +34,26 @@ df_dim = pd.DataFrame({'width':width, 'height':height, 'diagnostic':diagnostic})
 
 # Identify min resolution
 
-m_width, m_height = df_dim.describe().min()
+m_width, m_height = 0.8*df_dim.describe().mean()
 
 # Reshape pictures to normalized dimensions to create DF of identical dimensions
 # ? Interpolation type (‘nearest’, ‘lanczos’, ‘bilinear’, ‘bicubic’ or ‘cubic’),
 # ? keep ratio?, could try first go then keep ratio if improv metric
 # Form DF
 
-df = pd.DataFrame(columns=range(25200), index=range(len(diagnostic)))
+pic_dim = Image.open('dataset/yes/Y1.jpg').convert('L')
+pic_dim = pic.resize((int(m_width),int(m_height)), Image.LANCZOS)
+pic_vec = asarray(pic_dim).ravel()
+dim = len(pic_vec)
+
+df = pd.DataFrame(columns=range(dim), index=range(len(diagnostic)))
 index = 0
 
 for nb, name in enumerate(df_nbs.Path):
     for leng in range(df_nbs.Length[nb]):
         filename = name + '/' + os.listdir(name)[leng]
         pic = Image.open(filename).convert('L')
-        pic = pic.resize((int(m_width), int(m_height)), Image.NEAREST)
+        pic = pic.resize((int(m_width), int(m_height)), Image.LANCZOS)
         pic_vector = asarray(pic).ravel()
         df.iloc[index] = pic_vector
         index += 1
@@ -63,7 +68,7 @@ X = X.astype('int')
 y = X.pop('diagnostic')
 X = X/255
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, shuffle = True, random_state=0)
 
 y_train = y_train.values.reshape((y_train.shape[0], 1))
 y_test = y_test.values.reshape((y_test.shape[0], 1))
@@ -73,5 +78,5 @@ y_train = y_train.T
 X_test = X_test.T
 y_test = y_test.T
 
-param = L_layer_model(X_train, y_train, layers_dims = [25200, 5, 3, 1], num_iterations = 2000, print_cost = True)
+param = L_layer_model(X_train, y_train, layers_dims = [dim, 5, 1], learning_rate = 0.0075, num_iterations = 2500, print_cost = True)
 pro = predict(X_test, y_test, param)
