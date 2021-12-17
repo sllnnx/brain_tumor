@@ -7,6 +7,8 @@ from loric_build.nn_and_metrics import *
 
 # Path to folders with pictures
 
+os.chdir('C:/Users/lpetr/PycharmProjects/brain_tumor')
+
 path_yes = "dataset/yes"
 path_no = "dataset/no"
 
@@ -64,7 +66,7 @@ df['diagnostic'] = diag_num
 #SPlit data
 
 X = df.copy()
-X = X.astype('int')
+X = X.astype('float64')
 y = X.pop('diagnostic')
 X = X/255
 
